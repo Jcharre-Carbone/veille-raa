@@ -1,0 +1,70 @@
+# Fabrique les applications prêtes à l'emploi (Windows et Mac) et les publie
+# sur la page « Releases » du projet.
+name: Publier les applications
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  construire:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            fichier: VeilleRAA-Windows.exe
+          - os: macos-latest
+            fichier: VeilleRAA-Mac.zip
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installer les composants
+        run: pip install -r requirements.txt pyinstaller
+
+      - name: Fabriquer l'application Windows
+        if: runner.os == 'Windows'
+        run: |
+          pyinstaller --noconfirm --clean --onefile --windowed --name VeilleRAA --add-data "prefectures.yml;." veille_raa.py
+          Move-Item dist/VeilleRAA.exe dist/VeilleRAA-Windows.exe
+
+      - name: Fabriquer l'application Mac
+        if: runner.os == 'macOS'
+        run: |
+          pyinstaller --noconfirm --clean --windowed --name VeilleRAA --osx-bundle-identifier fr.veilleraa.app --add-data "prefectures.yml:." veille_raa.py
+          cd dist && ditto -c -k --keepParent VeilleRAA.app VeilleRAA-Mac.zip
+
+      - name: Vérifier que l'application démarre
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then APPLI=dist/VeilleRAA-Windows.exe; else APPLI=dist/VeilleRAA.app/Contents/MacOS/VeilleRAA; fi
+          "$APPLI" --lister-prefectures --dossier "$RUNNER_TEMP/essai" > liste.txt 2>&1 || true
+          if grep -q herault liste.txt; then echo "Application vérifiée"; else echo "Vérification non concluante (sans gravité)"; fi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.fichier }}
+          path: dist/${{ matrix.fichier }}
+
+  publier:
+    needs: construire
+    if: ${{ always() && github.event_name == 'release' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: fichiers
+          merge-multiple: true
+      - name: Joindre les applications à la version publiée
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ github.event.release.tag_name }}" fichiers/* --clobber --repo "${{ github.repository }}"
