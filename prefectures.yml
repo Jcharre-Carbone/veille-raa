@@ -1,0 +1,317 @@
+# Liste des préfectures connues du script.
+# Clé (à recopier dans config.yml) : nom du département dans l'adresse du site.
+# Les adresses suivent le schéma habituel www.<département>.gouv.fr.
+# Si l'une d'elles est fausse ou si la page des recueils n'est pas trouvée,
+# corrigez « site » ici, ou indiquez l'adresse exacte de la page des recueils
+# dans config.yml (rubrique adresses_personnalisees).
+# Facultatif pour chaque préfecture : « raa: <adresse de la page des recueils> »
+
+prefectures:
+  ain:
+    nom: "Ain (01)"
+    site: https://www.ain.gouv.fr
+  aisne:
+    nom: "Aisne (02)"
+    site: https://www.aisne.gouv.fr
+  allier:
+    nom: "Allier (03)"
+    site: https://www.allier.gouv.fr
+  alpes-de-haute-provence:
+    nom: "Alpes-de-Haute-Provence (04)"
+    site: https://www.alpes-de-haute-provence.gouv.fr
+  hautes-alpes:
+    nom: "Hautes-Alpes (05)"
+    site: https://www.hautes-alpes.gouv.fr
+  alpes-maritimes:
+    nom: "Alpes-Maritimes (06)"
+    site: https://www.alpes-maritimes.gouv.fr
+  ardeche:
+    nom: "Ardèche (07)"
+    site: https://www.ardeche.gouv.fr
+  ardennes:
+    nom: "Ardennes (08)"
+    site: https://www.ardennes.gouv.fr
+  ariege:
+    nom: "Ariège (09)"
+    site: https://www.ariege.gouv.fr
+  aube:
+    nom: "Aube (10)"
+    site: https://www.aube.gouv.fr
+  aude:
+    nom: "Aude (11)"
+    site: https://www.aude.gouv.fr
+  aveyron:
+    nom: "Aveyron (12)"
+    site: https://www.aveyron.gouv.fr
+  bouches-du-rhone:
+    nom: "Bouches-du-Rhône (13)"
+    site: https://www.bouches-du-rhone.gouv.fr
+  calvados:
+    nom: "Calvados (14)"
+    site: https://www.calvados.gouv.fr
+  cantal:
+    nom: "Cantal (15)"
+    site: https://www.cantal.gouv.fr
+  charente:
+    nom: "Charente (16)"
+    site: https://www.charente.gouv.fr
+  charente-maritime:
+    nom: "Charente-Maritime (17)"
+    site: https://www.charente-maritime.gouv.fr
+  cher:
+    nom: "Cher (18)"
+    site: https://www.cher.gouv.fr
+  correze:
+    nom: "Corrèze (19)"
+    site: https://www.correze.gouv.fr
+  corse-du-sud:
+    nom: "Corse-du-Sud (2A)"
+    site: https://www.corse-du-sud.gouv.fr
+  haute-corse:
+    nom: "Haute-Corse (2B)"
+    site: https://www.haute-corse.gouv.fr
+  cote-dor:
+    nom: "Côte-d'Or (21)"
+    site: https://www.cote-dor.gouv.fr
+  cotes-darmor:
+    nom: "Côtes-d'Armor (22)"
+    site: https://www.cotes-darmor.gouv.fr
+  creuse:
+    nom: "Creuse (23)"
+    site: https://www.creuse.gouv.fr
+  dordogne:
+    nom: "Dordogne (24)"
+    site: https://www.dordogne.gouv.fr
+  doubs:
+    nom: "Doubs (25)"
+    site: https://www.doubs.gouv.fr
+  drome:
+    nom: "Drôme (26)"
+    site: https://www.drome.gouv.fr
+  eure:
+    nom: "Eure (27)"
+    site: https://www.eure.gouv.fr
+  eure-et-loir:
+    nom: "Eure-et-Loir (28)"
+    site: https://www.eure-et-loir.gouv.fr
+  finistere:
+    nom: "Finistère (29)"
+    site: https://www.finistere.gouv.fr
+  gard:
+    nom: "Gard (30)"
+    site: https://www.gard.gouv.fr
+  haute-garonne:
+    nom: "Haute-Garonne (31)"
+    site: https://www.haute-garonne.gouv.fr
+  gers:
+    nom: "Gers (32)"
+    site: https://www.gers.gouv.fr
+  gironde:
+    nom: "Gironde (33)"
+    site: https://www.gironde.gouv.fr
+  herault:
+    nom: "Hérault (34)"
+    site: https://www.herault.gouv.fr
+  ille-et-vilaine:
+    nom: "Ille-et-Vilaine (35)"
+    site: https://www.ille-et-vilaine.gouv.fr
+  indre:
+    nom: "Indre (36)"
+    site: https://www.indre.gouv.fr
+  indre-et-loire:
+    nom: "Indre-et-Loire (37)"
+    site: https://www.indre-et-loire.gouv.fr
+  isere:
+    nom: "Isère (38)"
+    site: https://www.isere.gouv.fr
+  jura:
+    nom: "Jura (39)"
+    site: https://www.jura.gouv.fr
+  landes:
+    nom: "Landes (40)"
+    site: https://www.landes.gouv.fr
+  loir-et-cher:
+    nom: "Loir-et-Cher (41)"
+    site: https://www.loir-et-cher.gouv.fr
+  loire:
+    nom: "Loire (42)"
+    site: https://www.loire.gouv.fr
+  haute-loire:
+    nom: "Haute-Loire (43)"
+    site: https://www.haute-loire.gouv.fr
+  loire-atlantique:
+    nom: "Loire-Atlantique (44)"
+    site: https://www.loire-atlantique.gouv.fr
+  loiret:
+    nom: "Loiret (45)"
+    site: https://www.loiret.gouv.fr
+  lot:
+    nom: "Lot (46)"
+    site: https://www.lot.gouv.fr
+  lot-et-garonne:
+    nom: "Lot-et-Garonne (47)"
+    site: https://www.lot-et-garonne.gouv.fr
+  lozere:
+    nom: "Lozère (48)"
+    site: https://www.lozere.gouv.fr
+  maine-et-loire:
+    nom: "Maine-et-Loire (49)"
+    site: https://www.maine-et-loire.gouv.fr
+  manche:
+    nom: "Manche (50)"
+    site: https://www.manche.gouv.fr
+  marne:
+    nom: "Marne (51)"
+    site: https://www.marne.gouv.fr
+  haute-marne:
+    nom: "Haute-Marne (52)"
+    site: https://www.haute-marne.gouv.fr
+  mayenne:
+    nom: "Mayenne (53)"
+    site: https://www.mayenne.gouv.fr
+  meurthe-et-moselle:
+    nom: "Meurthe-et-Moselle (54)"
+    site: https://www.meurthe-et-moselle.gouv.fr
+  meuse:
+    nom: "Meuse (55)"
+    site: https://www.meuse.gouv.fr
+  morbihan:
+    nom: "Morbihan (56)"
+    site: https://www.morbihan.gouv.fr
+  moselle:
+    nom: "Moselle (57)"
+    site: https://www.moselle.gouv.fr
+  nievre:
+    nom: "Nièvre (58)"
+    site: https://www.nievre.gouv.fr
+  nord:
+    nom: "Nord (59)"
+    site: https://www.nord.gouv.fr
+  oise:
+    nom: "Oise (60)"
+    site: https://www.oise.gouv.fr
+  orne:
+    nom: "Orne (61)"
+    site: https://www.orne.gouv.fr
+  pas-de-calais:
+    nom: "Pas-de-Calais (62)"
+    site: https://www.pas-de-calais.gouv.fr
+  puy-de-dome:
+    nom: "Puy-de-Dôme (63)"
+    site: https://www.puy-de-dome.gouv.fr
+  pyrenees-atlantiques:
+    nom: "Pyrénées-Atlantiques (64)"
+    site: https://www.pyrenees-atlantiques.gouv.fr
+  hautes-pyrenees:
+    nom: "Hautes-Pyrénées (65)"
+    site: https://www.hautes-pyrenees.gouv.fr
+  pyrenees-orientales:
+    nom: "Pyrénées-Orientales (66)"
+    site: https://www.pyrenees-orientales.gouv.fr
+  bas-rhin:
+    nom: "Bas-Rhin (67)"
+    site: https://www.bas-rhin.gouv.fr
+  haut-rhin:
+    nom: "Haut-Rhin (68)"
+    site: https://www.haut-rhin.gouv.fr
+  rhone:
+    nom: "Rhône (69)"
+    site: https://www.rhone.gouv.fr
+  haute-saone:
+    nom: "Haute-Saône (70)"
+    site: https://www.haute-saone.gouv.fr
+  saone-et-loire:
+    nom: "Saône-et-Loire (71)"
+    site: https://www.saone-et-loire.gouv.fr
+  sarthe:
+    nom: "Sarthe (72)"
+    site: https://www.sarthe.gouv.fr
+  savoie:
+    nom: "Savoie (73)"
+    site: https://www.savoie.gouv.fr
+  haute-savoie:
+    nom: "Haute-Savoie (74)"
+    site: https://www.haute-savoie.gouv.fr
+  seine-maritime:
+    nom: "Seine-Maritime (76)"
+    site: https://www.seine-maritime.gouv.fr
+  seine-et-marne:
+    nom: "Seine-et-Marne (77)"
+    site: https://www.seine-et-marne.gouv.fr
+  yvelines:
+    nom: "Yvelines (78)"
+    site: https://www.yvelines.gouv.fr
+  deux-sevres:
+    nom: "Deux-Sèvres (79)"
+    site: https://www.deux-sevres.gouv.fr
+  somme:
+    nom: "Somme (80)"
+    site: https://www.somme.gouv.fr
+  tarn:
+    nom: "Tarn (81)"
+    site: https://www.tarn.gouv.fr
+  tarn-et-garonne:
+    nom: "Tarn-et-Garonne (82)"
+    site: https://www.tarn-et-garonne.gouv.fr
+  var:
+    nom: "Var (83)"
+    site: https://www.var.gouv.fr
+  vaucluse:
+    nom: "Vaucluse (84)"
+    site: https://www.vaucluse.gouv.fr
+  vendee:
+    nom: "Vendée (85)"
+    site: https://www.vendee.gouv.fr
+  vienne:
+    nom: "Vienne (86)"
+    site: https://www.vienne.gouv.fr
+  haute-vienne:
+    nom: "Haute-Vienne (87)"
+    site: https://www.haute-vienne.gouv.fr
+  vosges:
+    nom: "Vosges (88)"
+    site: https://www.vosges.gouv.fr
+  yonne:
+    nom: "Yonne (89)"
+    site: https://www.yonne.gouv.fr
+  territoire-de-belfort:
+    nom: "Territoire de Belfort (90)"
+    site: https://www.territoire-de-belfort.gouv.fr
+  essonne:
+    nom: "Essonne (91)"
+    site: https://www.essonne.gouv.fr
+  hauts-de-seine:
+    nom: "Hauts-de-Seine (92)"
+    site: https://www.hauts-de-seine.gouv.fr
+  seine-saint-denis:
+    nom: "Seine-Saint-Denis (93)"
+    site: https://www.seine-saint-denis.gouv.fr
+  val-de-marne:
+    nom: "Val-de-Marne (94)"
+    site: https://www.val-de-marne.gouv.fr
+  val-doise:
+    nom: "Val-d'Oise (95)"
+    site: https://www.val-doise.gouv.fr
+  guadeloupe:
+    nom: "Guadeloupe (971)"
+    site: https://www.guadeloupe.gouv.fr
+  martinique:
+    nom: "Martinique (972)"
+    site: https://www.martinique.gouv.fr
+  guyane:
+    nom: "Guyane (973)"
+    site: https://www.guyane.gouv.fr
+  reunion:
+    nom: "La Réunion (974)"
+    site: https://www.reunion.gouv.fr
+  mayotte:
+    nom: "Mayotte (976)"
+    site: https://www.mayotte.gouv.fr
+
+  # Paris : préfecture de région et préfecture de police (adresses à vérifier)
+  paris:
+    nom: "Paris (75), préfecture de région Île-de-France"
+    site: https://www.prefectures-regions.gouv.fr/ile-de-france
+  prefecture-de-police:
+    nom: "Préfecture de police (Paris et petite couronne)"
+    site: https://www.prefecturedepolice.interieur.gouv.fr
