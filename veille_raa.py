@@ -54,7 +54,7 @@ except ImportError as erreur:  # pragma: no cover
     )
     sys.exit(1)
 
-VERSION = "2.1.0"
+VERSION = "2.2.0"
 NOM_APPLI = "VeilleRAA"
 FIGE = bool(getattr(sys, "frozen", False))          # application fabriquée (.exe / .app)
 PROGRAMME = Path(__file__).resolve().parent           # dossier du code source
