@@ -3,7 +3,7 @@ Mise en place du contrôle automatique sur l'ordinateur.
 
 - Windows : une tâche du Planificateur de tâches (« Veille RAA »), sans droits administrateur.
 - Mac : un agent de lancement (~/Library/LaunchAgents/fr.veilleraa.controle.plist).
-- Linux : une ligne dans la crontab de l'utilisateur.
+- Linux : une ligne dans la crontab de l'utilisateur, ou à défaut un minuteur systemd utilisateur.
 
 Dans les trois cas, l'ordinateur lance « VeilleRAA --controle » à intervalle régulier,
 tant qu'il est allumé et que la session est ouverte.
@@ -81,7 +81,23 @@ def installer_programme() -> list[str]:
                 destination = executable
     if sys.platform == "win32":
         _raccourcis(destination)
+    else:
+        _entree_menu_linux(destination)
     return [str(destination), "--controle"]
+
+
+def _entree_menu_linux(cible: Path) -> None:
+    """Entrée « Veille RAA » dans le menu des applications (au mieux)."""
+    try:
+        os.chmod(cible, 0o755)
+        dossier = Path(os.environ.get("XDG_DATA_HOME") or Path.home() / ".local" / "share") / "applications"
+        dossier.mkdir(parents=True, exist_ok=True)
+        (dossier / "veille-raa.desktop").write_text(
+            "[Desktop Entry]\nType=Application\nName=Veille RAA\n"
+            "Comment=Réglages de la veille des recueils des actes administratifs\n"
+            f'Exec="{cible}"\nTerminal=false\nCategories=Office;\n', encoding="utf-8")
+    except OSError:
+        pass
 
 
 def _raccourcis(cible: Path) -> None:
@@ -241,27 +257,84 @@ def ligne_cron(commande: list[str], minutes: int) -> str:
     return f"*/{int(minutes)} * * * * {morceaux} >/dev/null 2>&1 {MARQUE_CRON}"
 
 
-def _linux_installer(commande: list[str], minutes: int) -> None:
-    lignes = [l for l in _crontab_actuelle() if MARQUE_CRON not in l]
-    lignes.append(ligne_cron(commande, minutes))
-    r = _executer(["crontab", "-"], "\n".join(lignes) + "\n")
+UNITE_SYSTEMD = "veille-raa"
+
+
+def _dossier_systemd() -> Path:
+    base = Path(os.environ.get("XDG_CONFIG_HOME") or Path.home() / ".config")
+    return base / "systemd" / "user"
+
+
+def _systemd_disponible() -> bool:
+    if not shutil.which("systemctl"):
+        return False
+    try:
+        return _executer(["systemctl", "--user", "show-environment"]).returncode == 0
+    except Exception:
+        return False
+
+
+def unites_systemd(commande: list[str], minutes: int) -> tuple[str, str]:
+    ligne = " ".join('"' + a.replace("\\", "\\\\").replace('"', '\\"') + '"' for a in commande)
+    service = ("[Unit]\nDescription=Veille RAA : contrôle des recueils des actes administratifs\n\n"
+               f"[Service]\nType=oneshot\nExecStart={ligne}\n")
+    minuteur = ("[Unit]\nDescription=Veille RAA : contrôle périodique\n\n"
+                f"[Timer]\nOnActiveSec=1min\nOnBootSec=2min\nOnUnitActiveSec={int(minutes)}min\n\n"
+                "[Install]\nWantedBy=timers.target\n")
+    return service, minuteur
+
+
+def _systemd_installer(commande: list[str], minutes: int) -> None:
+    dossier = _dossier_systemd()
+    dossier.mkdir(parents=True, exist_ok=True)
+    service, minuteur = unites_systemd(commande, minutes)
+    (dossier / f"{UNITE_SYSTEMD}.service").write_text(service, encoding="utf-8")
+    (dossier / f"{UNITE_SYSTEMD}.timer").write_text(minuteur, encoding="utf-8")
+    _executer(["systemctl", "--user", "daemon-reload"])
+    r = _executer(["systemctl", "--user", "enable", "--now", f"{UNITE_SYSTEMD}.timer"])
     if r.returncode != 0:
-        raise ErreurPlanification("Impossible de modifier la crontab : " + r.stderr.strip())
+        raise ErreurPlanification("systemd a refusé le minuteur : " + (r.stderr or r.stdout).strip())
+
+
+def _linux_installer(commande: list[str], minutes: int) -> None:
+    _linux_retirer()
+    if shutil.which("crontab"):
+        lignes = _crontab_actuelle()
+        lignes.append(ligne_cron(commande, minutes))
+        r = _executer(["crontab", "-"], "\n".join(lignes) + "\n")
+        if r.returncode == 0:
+            return
+    if _systemd_disponible():
+        _systemd_installer(commande, minutes)
+        return
+    raise ErreurPlanification(
+        "Ni cron ni systemd ne sont utilisables sur cet ordinateur. Installez le paquet « cron » "
+        "(ou « cronie ») puis réessayez, ou lancez « VeilleRAA --boucle 10 » au démarrage de la session.")
 
 
 def _linux_active() -> bool:
     try:
-        return any(MARQUE_CRON in l for l in _crontab_actuelle())
+        if any(MARQUE_CRON in l for l in _crontab_actuelle()):
+            return True
     except ErreurPlanification:
-        return False
+        pass
+    return (_dossier_systemd() / f"{UNITE_SYSTEMD}.timer").exists()
 
 
 def _linux_retirer() -> None:
     try:
-        lignes = [l for l in _crontab_actuelle() if MARQUE_CRON not in l]
+        lignes = _crontab_actuelle()
+        if any(MARQUE_CRON in l for l in lignes):
+            reste = [l for l in lignes if MARQUE_CRON not in l]
+            _executer(["crontab", "-"], "\n".join(reste) + ("\n" if reste else ""))
     except ErreurPlanification:
-        return
-    _executer(["crontab", "-"], "\n".join(lignes) + ("\n" if lignes else ""))
+        pass
+    minuteur = _dossier_systemd() / f"{UNITE_SYSTEMD}.timer"
+    if minuteur.exists():
+        if shutil.which("systemctl"):
+            _executer(["systemctl", "--user", "disable", "--now", f"{UNITE_SYSTEMD}.timer"])
+        minuteur.unlink()
+        (_dossier_systemd() / f"{UNITE_SYSTEMD}.service").unlink(missing_ok=True)
 
 
 # --------------------------------------------------------------------------
