@@ -17,6 +17,8 @@ Sur la page **[Releases](../../releases/latest)** de ce projet, téléchargez :
 - **Windows** : `VeilleRAA-Windows.exe`
 - **Mac** : `VeilleRAA-Mac.zip` (double-cliquez dessus pour obtenir `VeilleRAA`, puis faites-le glisser dans le dossier **Applications**)
 
+- **Linux** : `VeilleRAA-Linux`. Rendez-le exécutable puis lancez-le, par exemple dans un terminal ouvert dans le dossier de téléchargement : `chmod +x VeilleRAA-Linux && ./VeilleRAA-Linux`. Une entrée « Veille RAA » est ensuite ajoutée au menu des applications. Le contrôle automatique passe par `cron` ou, à défaut, par un minuteur systemd de l'utilisateur. L'application est compatible avec les distributions récentes (Ubuntu 22.04 ou plus récent, Debian 12, Fedora récente).
+
 ### 2. L'ouvrir une première fois
 
 Double-cliquez sur l'application. L'ordinateur va probablement se méfier, car elle ne vient pas d'un grand éditeur :
