@@ -1,5 +1,10 @@
-# Fabrique les applications prêtes à l'emploi (Windows et Mac) et les publie
+# Fabrique les applications prêtes à l'emploi (Windows, Mac et Linux) et les publie
 # sur la page « Releases » du projet.
+#
+# Pour publier une nouvelle version : onglet « Releases », « Draft a new release »,
+# créer une étiquette du type v2.0.0, puis « Publish release ». Les fichiers
+# VeilleRAA-Windows.exe et VeilleRAA-Mac.zip y sont ajoutés automatiquement
+# quelques minutes plus tard.
 name: Publier les applications
 
 on:
@@ -20,6 +25,8 @@ jobs:
             fichier: VeilleRAA-Windows.exe
           - os: macos-latest
             fichier: VeilleRAA-Mac.zip
+          - os: ubuntu-22.04
+            fichier: VeilleRAA-Linux
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -43,11 +50,22 @@ jobs:
           pyinstaller --noconfirm --clean --windowed --name VeilleRAA --osx-bundle-identifier fr.veilleraa.app --add-data "prefectures.yml:." veille_raa.py
           cd dist && ditto -c -k --keepParent VeilleRAA.app VeilleRAA-Mac.zip
 
+      - name: Fabriquer l'application Linux
+        if: runner.os == 'Linux'
+        run: |
+          pyinstaller --noconfirm --clean --onefile --name VeilleRAA --add-data "prefectures.yml:." veille_raa.py
+          mv dist/VeilleRAA dist/VeilleRAA-Linux
+
       - name: Vérifier que l'application démarre
         shell: bash
         run: |
-          if [ "$RUNNER_OS" = "Windows" ]; then APPLI=dist/VeilleRAA-Windows.exe; else APPLI=dist/VeilleRAA.app/Contents/MacOS/VeilleRAA; fi
+          case "$RUNNER_OS" in
+            Windows) APPLI=dist/VeilleRAA-Windows.exe ;;
+            macOS) APPLI=dist/VeilleRAA.app/Contents/MacOS/VeilleRAA ;;
+            *) APPLI=dist/VeilleRAA-Linux ;;
+          esac
           "$APPLI" --lister-prefectures --dossier "$RUNNER_TEMP/essai" > liste.txt 2>&1 || true
+          # l'application Windows n'a pas de console : on vérifie au moins qu'elle s'exécute
           if grep -q herault liste.txt; then echo "Application vérifiée"; else echo "Vérification non concluante (sans gravité)"; fi
 
       - uses: actions/upload-artifact@v4
